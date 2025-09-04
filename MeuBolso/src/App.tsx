@@ -1,9 +1,54 @@
-function App() {
+import { Routes, Route } from "react-router-dom";
+import AuthGate from "./components/AuthGate";
+import Login from "./pages/Login";
+import HomePage from "./pages/HomePage";
+import AddData from "./components/AddData";
+
+// novas páginas
+import Personal from "./pages/Personal";
+import Couple from "./pages/Couple";
+import Goals from "./pages/Goals";
+
+export default function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <h1 className="text-3xl font-bold text-blue-600">MeuBolso 💸</h1>
-    </div>
+    <Routes>
+      {/* rotas públicas */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/onboarding" element={<AddData />} />
+
+      {/* rotas privadas */}
+      <Route
+        path="/"
+        element={
+          <AuthGate>
+            <HomePage />
+          </AuthGate>
+        }
+      />
+      <Route
+        path="/personal"
+        element={
+          <AuthGate>
+            <Personal />
+          </AuthGate>
+        }
+      />
+      <Route
+        path="/couple"
+        element={
+          <AuthGate>
+            <Couple />
+          </AuthGate>
+        }
+      />
+      <Route
+        path="/goals"
+        element={
+          <AuthGate>
+            <Goals />
+          </AuthGate>
+        }
+      />
+    </Routes>
   );
 }
-
-export default App;

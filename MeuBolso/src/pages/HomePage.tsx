@@ -1,9 +1,31 @@
-import React from 'react'
+import Navbar from '@/components/Navbar';
+import Category from '@/pages/Categories';
 
-const HomePage = () => {
+export default function HomePage() {
   return (
-    <div>HomePage</div>
-  )
+    <>
+      <Navbar />
+      <h1 className="text-gray-500 bg-brand text-center text-4xl">MeuBolso</h1>
+      <div className="min-h-screen flex items-center justify-center gap-40 bg-brand">
+        <Category
+          label="Conta Pessoal"
+          image="/money.png"
+          imgClass="-top-10 -left-10 w-24 h-24"
+          to="/personal"
+        />
+        <Category
+          label="Conta Casal"
+          image="/couple.png"
+          imgClass="-bottom-12 left-1/2 -translate-x-1/2 w-28 h-28"
+          to="/couple"
+        />
+        <Category
+          label="Objetivos"
+          image="/graph.png"
+          imgClass="-bottom-10 -right-10 w-24 h-24"
+          to="/goals"
+        />
+      </div>
+    </>
+  );
 }
-
-export default HomePage
