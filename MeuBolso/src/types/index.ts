@@ -1,4 +1,4 @@
-export type Profile = { id: string; nome: string; pin_hash: string };
+export type Profile = { id: string; nome: string; pin_hash: string }; //vai mudar
 export type Transaction = {
   id: string;
   user_id: string;
@@ -15,3 +15,7 @@ export type CategoryProps = {
   imgClass: string;
   to: string;
 };
+
+export type ISODate = `${number}-${number}${number}-${number}${number}`;
+export type DailyCardProps = { dateISO: ISODate };
+

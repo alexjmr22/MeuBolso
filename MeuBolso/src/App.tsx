@@ -1,13 +1,14 @@
-import { Routes, Route } from "react-router-dom";
-import AuthGate from "./components/AuthGate";
-import Login from "./pages/Login";
-import HomePage from "./pages/HomePage";
-import AddData from "./components/AddData";
+import { Routes, Route } from 'react-router-dom';
+import AuthGate from './components/AuthGate';
+import Login from './pages/Login';
+import HomePage from './assets/HomePage';
+import AddData from './components/AddData';
 
 // novas páginas
-import Personal from "./pages/Personal";
-import Couple from "./pages/Couple";
-import Goals from "./pages/Goals";
+import Personal from './pages/Personal';
+import Couple from './pages/Couple';
+import Goals from './pages/Goals';
+import DailyCard from './components/DailyCard';
 
 export default function App() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
           </AuthGate>
         }
       />
+
     </Routes>
   );
 }

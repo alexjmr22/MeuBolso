@@ -1,6 +1,7 @@
 import supabase from '@/utils/supabase';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from './ui/button';
+const iconSrc = `${import.meta.env.BASE_URL}Icon.ico`;
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -14,8 +15,11 @@ const Navbar = () => {
     <div className="fixed top-0 left-0 right-0 z-50 bg-brand flex justify-between items-center p-5 shadow-md">
       <div className="flex gap-4">
         <Link to="/">
-          <Button variant="outline">Home</Button>
+          <Button variant="outline">
+            <img src={iconSrc} alt="Meu Bolso" className="h-6 w-6" />
+          </Button>
         </Link>
+
         <Link to="/personal">
           <Button variant="outline">Conta Pessoal</Button>
         </Link>

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Daily = () => {
   return (
-    <div>Daily</div>
+    <div>Isto é para aparecer o gasto diario</div>
   )
 }
 

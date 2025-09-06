@@ -2,7 +2,7 @@ import React from 'react'
 
 const Monthly = () => {
   return (
-    <div>Monthly</div>
+    <div>isto serve so para aparecer o gasto mensal</div>
   )
 }
 
