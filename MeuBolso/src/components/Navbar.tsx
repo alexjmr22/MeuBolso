@@ -16,10 +16,9 @@ const Navbar = () => {
       <div className="flex gap-4">
         <Link to="/">
           <Button variant="outline">
-            <img src={iconSrc} alt="Meu Bolso" className="h-6 w-6" />
+            <img src={iconSrc} alt="Meu Bolso" className="h-14 w-14" />
           </Button>
         </Link>
-
         <Link to="/personal">
           <Button variant="outline">Conta Pessoal</Button>
         </Link>

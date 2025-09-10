@@ -1,4 +1,3 @@
-// components/CalendarioComDialog.tsx
 'use client';
 import * as React from 'react';
 import { Calendar } from '@/components/ui/calendar';
@@ -11,7 +10,6 @@ import {
 import DailyCard from '@/components/DailyCard';
 import type { ISODate } from '@/types';
 
-// helper: formata Date -> "YYYY-MM-DD"
 const fmtLocal = (d: Date): ISODate =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(
     2,
