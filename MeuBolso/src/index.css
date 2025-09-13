@@ -6,7 +6,10 @@
 
 @theme {
   --color-brand: #f2cb8a;
+  --color-brand-light: #f8e8c8;
+  --color-brand-bg: #fcf5ec;
 }
+
 .button-hover {
   @apply border-black text-black hover:bg-brand hover:text-white hover:border-brand transition-colors;
 }
@@ -22,16 +25,6 @@
 .circle:hover {
   @apply scale-140;
 }
-
-
-
-
-
-
-
-
-
-
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

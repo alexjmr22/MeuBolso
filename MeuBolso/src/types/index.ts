@@ -21,5 +21,35 @@ export type TxRow = {
   type_id: string | null;
   created_at: string;
   updated_at: string;
-  type?: { name: string } | null; 
+  type?: { name: string } | null;
+};
+
+export type WithCloseAndSuccess = {
+  onClose: () => void;
+  onSuccess: () => void;
+};
+
+export type TransactionFormProps = {
+  dateISO?: ISODate;
+  onClose: () => void;
+  onSuccess: () => void;
+};
+
+export type MonthlyLineChartProps = {
+  month?: number;
+  year?: number;
+  transactions?: TxRow[];
+  className?: string;
+  currencySymbol?: string;
+  width?: number | string;
+  height?: number | string;
+};
+
+export type MonthlyPieChartProps = {
+  month?: number;
+  year?: number;
+  transactions?: TxRow[];
+  types?: ExpenseType[];
+  height?: number;
+  className?: string;
 };

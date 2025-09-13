@@ -1,40 +1,57 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import type { DailyCardProps, TxRow } from '@/types';
-import supabase from '@/utils/supabase';
+import supabase, { removeTransaction } from '@/utils/supabase';
+import TransactionForm from './TransactionForm';
+import { Loader2Icon } from 'lucide-react';
 
 export default function DailyCard({ dateISO }: DailyCardProps) {
   const [transactions, setTransactions] = useState<TxRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [add, setAdd] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchTransactions() {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('transactions')
-        .select(
-          'id, user_id, amount, date, note, is_shared, type_id, created_at, updated_at, type:expense_types(name)'
-        )
-        .eq('date', dateISO)
-        .order('created_at', { ascending: false });
+  const fetchTransactions = useCallback(async () => {
+    if (!dateISO) return;
+    setLoading(true);
 
-      if (error) {
-        console.error('Erro a buscar transações:', error.message);
-        setTransactions([]);
-      } else {
-        const rows = (data ?? []).map((d: any) => ({
-          ...d,
-          type: Array.isArray(d.type) ? (d.type[0] ?? null) : (d.type ?? null),
-        })) as TxRow[];
+    const { data, error } = await supabase
+      .from('transactions')
+      .select(
+        'id, user_id, amount, date, note, is_shared, type_id, created_at, updated_at, type:expense_types(name)'
+      )
+      .eq('date', dateISO)
+      .order('created_at', { ascending: false });
 
-        setTransactions(rows);
-      }
-
-      setLoading(false);
+    if (error) {
+      console.error('Erro a buscar transações:', error.message);
+      setTransactions([]);
+    } else {
+      const rows = (data ?? []).map((d: any) => ({
+        ...d,
+        type: Array.isArray(d.type) ? (d.type[0] ?? null) : (d.type ?? null),
+      })) as TxRow[];
+      setTransactions(rows);
     }
 
-    if (dateISO) fetchTransactions();
+    setLoading(false);
   }, [dateISO]);
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions]);
+
+  const handleRemove = useCallback(async (id: string) => {
+    try {
+      setDeletingId(id);
+      await removeTransaction(id);
+      setTransactions((prev) => prev.filter((t) => t.id !== id));
+    } catch (e) {
+      console.error('Erro a remover transação:', (e as Error).message);
+    } finally {
+      setDeletingId(null);
+    }
+  }, []);
 
   const totalDia = useMemo(
     () => transactions.reduce((sum, t) => sum + Number(t.amount || 0), 0),
@@ -64,7 +81,9 @@ export default function DailyCard({ dateISO }: DailyCardProps) {
         </div>
 
         {loading ? (
-          <p>Carregando…</p>
+          <div className="flex items-center justify-center py-4 text-muted-foreground">
+            <Loader2Icon className="h-5 w-5 animate-spin" />
+          </div>
         ) : transactions.length === 0 ? (
           <p>Sem movimentos neste dia</p>
         ) : (
@@ -92,9 +111,23 @@ export default function DailyCard({ dateISO }: DailyCardProps) {
             <h4 className="mt-3 font-semibold">Movimentos</h4>
             <ul className="grid gap-2 text-muted-foreground">
               {transactions.map((t) => (
-                <li key={t.id}>
-                  • {t.note || 'Sem descrição'} — {t.amount.toFixed(2)} €{' '}
-                  {t.type?.name ? `(${t.type.name})` : ''}
+                <li key={t.id} className="flex items-center justify-between gap-2">
+                  <span>
+                    • {t.note || 'Sem descrição'} — {t.amount.toFixed(2)} €{' '}
+                    {t.type?.name ? `(${t.type.name})` : ''}
+                  </span>
+
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      disabled={deletingId === t.id}
+                      onClick={() => handleRemove(t.id)}
+                      aria-label="Remover movimento"
+                    >
+                      {deletingId === t.id ? 'A remover…' : 'Remover'}
+                    </Button>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -102,10 +135,20 @@ export default function DailyCard({ dateISO }: DailyCardProps) {
         )}
 
         <div className="flex justify-end gap-2 pt-2">
-          <Button variant="secondary" size="sm">
+          <Button variant="secondary" size="sm" onClick={() => setAdd(true)}>
             Adicionar
           </Button>
-          <Button size="sm">Editar</Button>
+
+          {add && (
+            <TransactionForm
+              dateISO={dateISO}
+              onClose={() => setAdd(false)}
+              onSuccess={async () => {
+                await fetchTransactions();
+                setAdd(false);
+              }}
+            />
+          )}
         </div>
       </section>
     </div>
