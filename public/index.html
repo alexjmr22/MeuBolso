@@ -1,0 +1,9 @@
+<script>
+  (function () {
+    var r = sessionStorage.redirect;
+    if (r) {
+      delete sessionStorage.redirect;
+      history.replaceState(null, null, r);
+    }
+  })();
+</script>
