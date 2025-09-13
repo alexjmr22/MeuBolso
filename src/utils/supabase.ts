@@ -1,10 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import type { TxRow, ExpenseType } from '@/types';
 
-const url = import.meta.env.VITE_SUPABASE_URL!;
-const anon = import.meta.env.VITE_SUPABASE_ANON_KEY!;
+const supabaseurl = "https://bdhzypiexottabgbjqst.supabase.co";
+const supabaseAnonKey  = "sb_publishable_rZf9S0jBuxOisqPAYuytag_ubl1vxxk";
 
-const supabase = createClient(url, anon, {
+const supabase = createClient(supabaseurl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
