@@ -4,12 +4,11 @@ import supabase from '../utils/supabase';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-
 export default function Login() {
   const [email, setEmail] = useState('');
   const [sending, setSending] = useState(false);
   const navigate = useNavigate();
-  const redirectTo = window.location.origin; // tem de estar nas Redirect URLs do Supabase
+  const redirectTo = new URL(import.meta.env.BASE_URL, window.location.origin).toString();
 
   useEffect(() => {
     const {
@@ -49,7 +48,7 @@ export default function Login() {
             variant="outline"
             onClick={sendOTP}
             disabled={!email || sending}
-            className= "button-hover"
+            className="button-hover"
           >
             {sending ? 'A enviar…' : 'Continuar'}
           </Button>
