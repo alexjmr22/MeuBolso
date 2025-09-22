@@ -15,8 +15,8 @@ const Personal = () => {
   const [total, setTotal] = useState<number>(0);
   const [totalMes, setTotalMes] = useState<number>(0);
   const now = new Date();
-  const month =(now.getMonth() + 1);
-  const year = (now.getFullYear());
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
 
   //para fazer quando criar botao para ver outros meses
   // function nextMonth() {
@@ -108,7 +108,14 @@ const Personal = () => {
               </Button>
               {add && (
                 <div className="w-full">
-                  <TransactionForm onClose={() => setAdd(false)} onSuccess={() => setAdd(false)} />
+                  <TransactionForm
+                    onClose={() => setAdd(false)}
+                    onSuccess={async () => {
+                      const updated = await fetchAllTransactions();
+                      setTransactions(updated); // atualiza a lista
+                      setAdd(false); // fecha o modal
+                    }}
+                  />
                 </div>
               )}
             </aside>
